@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>738041064211-56erhqs12unn6m8dsli2ruie8a9ppb62.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.738041064211-56erhqs12unn6m8dsli2ruie8a9ppb62</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBP_dkyGde5h6n_AOXsTP1MlZN11JD2q1s</string>
+	<key>GCM_SENDER_ID</key>
+	<string>738041064211</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ngocanh.notes</string>
+	<key>PROJECT_ID</key>
+	<string>reflecting-poet-268910</string>
+	<key>STORAGE_BUCKET</key>
+	<string>reflecting-poet-268910.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:738041064211:ios:5d297aee8357a1a28d88e6</string>
+</dict>
+</plist>
