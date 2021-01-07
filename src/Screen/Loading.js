@@ -6,17 +6,18 @@ import RegistrationScreen from "../Screen/Register"
 import * as firebase from 'firebase'
 
 export default class Loading extends React.Component {
-    componentDidMount(){
-      this.checkSttLogin()
+    componentDidMount() {
+        this.checkSttLogin()
     }
-    checkSttLogin (){
-      firebase.auth().onAuthStateChanged(function(user){
-        console.warn(user);
-        if(user)
-          this.prpos.navigation.navigate("Dashboard")
-        else
-          this.props.navigation.navigate("Login")
-      }.bind(this))
+    checkSttLogin() {
+        const openScreen = this.props.navigation.navigate
+        firebase.auth().onAuthStateChanged(function(user) {
+            // console.warn(user, "Loading");
+            if (user)
+                openScreen("Dashboard")
+            else
+                openScreen("Login")
+        }.bind(this))
     }
     render() {
         return (
@@ -31,10 +32,10 @@ export default class Loading extends React.Component {
 // <AuthStack.Screen name={"Register"} component={RegistrationScreen}/>
 
 const styles = StyleSheet.create({
-  container: {
-    flex : 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    container: {
+        flex: 1,
+        backgroundColor: "#fff",
+        alignItems: "center",
+        justifyContent: "center"
+    }
 })
