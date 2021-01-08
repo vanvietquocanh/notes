@@ -14,7 +14,7 @@ export default class Loading extends React.Component {
         firebase.auth().onAuthStateChanged(function(user) {
             // console.warn(user, "Loading");
             if (user)
-                openScreen("Dashboard")
+                openScreen("SideBar")
             else
                 openScreen("Login")
         }.bind(this))

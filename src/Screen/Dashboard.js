@@ -17,6 +17,9 @@ export default class Home extends React.Component {
             myText: 'Bonbon'
         };
     }
+    componentDidMount() {
+        this.props.navigation.closeDrawer()
+    }
     onSwipeRight(gestureState) {
         this.props.navigation.openDrawer()
         this.setState({ myText: 'You swiped right!' });
@@ -27,26 +30,25 @@ export default class Home extends React.Component {
             velocityThreshold: 0.27,
             directionalOffsetThreshold: 80
         };
-        const data = [
-            {
+        const data = [{
                 name: "Pendding",
                 population: 527612,
                 color: "#ffc107",
-                legendFontColor: "#fff",
+                legendFontColor: "#222",
                 legendFontSize: 15
             },
             {
                 name: "Processing",
                 population: 8538000,
                 color: "#dc3545",
-                legendFontColor: "#fff",
+                legendFontColor: "#222",
                 legendFontSize: 15
             },
             {
                 name: "Done",
                 population: 11920000,
                 color: "#28a745",
-                legendFontColor: "#fff",
+                legendFontColor: "#222",
                 legendFontSize: 15
             }
         ];
@@ -65,14 +67,10 @@ export default class Home extends React.Component {
 					</Text>
 					<PieChart
 					  data={data}
-					  style={styles.PieChart}
 					  width={Dimensions.get('window').width}
-					  height={220}
+					  height={230}
 					  chartConfig={{
-					      backgroundColor: "#e26a00",
 					      flex: 1,
-					      backgroundGradientFrom: "#fb8c00",
-					      backgroundGradientTo: "#ffa726",
 					      decimalPlaces: 2,
 					      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
 					      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -86,8 +84,8 @@ export default class Home extends React.Component {
 					      }
 					    }}
 					  accessor={"population"}
-					  backgroundColor={"#007bff"}
-					  center={[10, 10]}
+					  center={[10, -10]}
+					   style={styles.PieChart}
 					/>
 				</SafeAreaView>
     		</GestureRecognizer>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { createDrawerNavigator} from '@react-navigation/drawer';
-import { Block, Text } from 'expo-ui-kit';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 // import Penguin from '../Items/Penguin';
@@ -16,7 +15,7 @@ const Drawer = createDrawerNavigator()
 
 export default ({navigation}) =>{
 	return (
-			<Drawer.Navigator initialRouteName="Create" drawerContent={props => <Close {...props} />} >
+			<Drawer.Navigator initialRouteName="Dashboard" drawerContent={props => <Close {...props} />} >
 		        <Drawer.Screen name="Dashboard" component={DashboardScreen} />
 		        <Drawer.Screen name="Category" component={CategoryScreen} />
 		        <Drawer.Screen name="Create" component={CreateNoteScreen} />
