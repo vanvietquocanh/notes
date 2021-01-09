@@ -15,7 +15,7 @@ const Drawer = createDrawerNavigator()
 
 export default ({navigation}) =>{
 	return (
-			<Drawer.Navigator initialRouteName="Dashboard" drawerContent={props => <Close {...props} />} >
+			<Drawer.Navigator initialRouteName="Create" drawerContent={props => <Close {...props} />} >
 		        <Drawer.Screen name="Dashboard" component={DashboardScreen} />
 		        <Drawer.Screen name="Category" component={CategoryScreen} />
 		        <Drawer.Screen name="Create" component={CreateNoteScreen} />

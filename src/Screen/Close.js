@@ -7,6 +7,7 @@ import {
   	DrawerItemList,
   	DrawerItem
 } from '@react-navigation/drawer';
+import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -28,9 +29,19 @@ const styles = StyleSheet.create({
 });
 
 export default (props) =>{
-	// console.log(firebase.auth());
-	// console.log(firebase.auth().currentUser.displayName);
+	const config = {
+        velocityThreshold: 0.27,
+        directionalOffsetThreshold: 80
+    };
 	return (
+		<GestureRecognizer
+		        onSwipeLeft={() => props.navigation.closeDrawer()}
+		        config={config}
+		        style={{
+		          flex: 1,
+		          backgroundColor: "#fff"
+		        }}
+		        >
 		<SafeAreaView style={{flex: 1}}>
 		    <Image
 		        source={(firebase.auth().currentUser.photoURL===null)?require('../images/NoAvt.png'):{uri: firebase.auth().currentUser.photoURL}}
@@ -50,6 +61,7 @@ export default (props) =>{
 		      />
 		    </DrawerContentScrollView>
 		</SafeAreaView>
+		</GestureRecognizer>
 	)
 }
 

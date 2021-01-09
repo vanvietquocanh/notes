@@ -34,21 +34,21 @@ export default class Home extends React.Component {
                 name: "Pendding",
                 population: 527612,
                 color: "#ffc107",
-                legendFontColor: "#222",
+                legendFontColor: "#007bff",
                 legendFontSize: 15
             },
             {
                 name: "Processing",
                 population: 8538000,
                 color: "#dc3545",
-                legendFontColor: "#222",
+                legendFontColor: "#007bff",
                 legendFontSize: 15
             },
             {
                 name: "Done",
                 population: 11920000,
                 color: "#28a745",
-                legendFontColor: "#222",
+                legendFontColor: "#007bff",
                 legendFontSize: 15
             }
         ];
@@ -61,32 +61,34 @@ export default class Home extends React.Component {
 		          backgroundColor: "#fff"
 		        }}
 		        >
-		        <SafeAreaView>
-					<Text style={[s.textCenter]}>
-						THIS IS DASHBOARD
-					</Text>
-					<PieChart
-					  data={data}
-					  width={Dimensions.get('window').width}
-					  height={230}
-					  chartConfig={{
-					      flex: 1,
-					      decimalPlaces: 2,
-					      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-					      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-					      style: {
-					        borderRadius: 16
-					      },
-					      propsForDots: {
-					        r: "6",
-					        strokeWidth: "2",
-					        stroke: "#ffa726"
-					      }
-					    }}
-					  accessor={"population"}
-					  center={[10, -10]}
-					   style={styles.PieChart}
-					/>
+		        <SafeAreaView style={styles.container}>
+					<View style={styles.container}>
+						<Text style={[s.textCenter, s.textPrimary]}>
+							THIS IS DASHBOARD
+						</Text>
+						<PieChart
+						  data={data}
+						  width={Dimensions.get('window').width}
+						  height={230}
+						  chartConfig={{
+						      flex: 1,
+						      decimalPlaces: 2,
+						      color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+						      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+						      style: {
+						        borderRadius: 16
+						      },
+						      propsForDots: {
+						        r: "6",
+						        strokeWidth: "2",
+						        stroke: "#ffa726"
+						      }
+						    }}
+						  accessor={"population"}
+						  center={[10, -10]}
+						   style={styles.PieChart}
+						/>
+			    	</View>
 				</SafeAreaView>
     		</GestureRecognizer>
         );
