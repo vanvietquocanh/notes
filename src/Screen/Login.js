@@ -46,7 +46,7 @@ export default class Login extends React.Component {
 	        			lastLogin: Date.now(),
 	        		})
 	        	}
-            }).catch((e)=>this.setState({error: "Invalid email/password or the account is not registered! Please try again!", email:"", password:""}))
+            }).catch((e)=>console.log(e))
     	}else{
         	this.setState({
         		error: "Invalid email/password or the account is not registered! Please try again!", 

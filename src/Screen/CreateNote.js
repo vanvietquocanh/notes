@@ -4,6 +4,8 @@ import { FlatList, View, Button, StyleSheet, SafeAreaView, TextInput, Dimensions
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import * as SQLite from "expo-sqlite"
+import firebase from "firebase"
 
 import TagInput from 'react-native-tags-input';
 
@@ -14,6 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BootstrapStyleSheet from 'react-native-bootstrap-styles';
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const { s, c } = bootstrapStyleSheet;
+const db = SQLite.openDatabase("db.db")
 
 export default class Category extends React.Component {
     constructor(props) {
@@ -22,15 +25,14 @@ export default class Category extends React.Component {
             title: "",
             priority: "",
             description: "",
-            category: "",
-            title: "",
-            date: new Date(Date.now()),
+            beginDate: new Date(Date.now()),
+            endDate  : new Date(Date.now()),
             mode: 'datetime',
             show: true,
             tags: {
                 tag: '',
                 tagsArray: []
-            }
+            },
         }
     }
     updateTagState = (state) => {
@@ -38,18 +40,37 @@ export default class Category extends React.Component {
             tags: state
         })
     }
-    onChange=(event, selectedDate)=>{
+    onChangeBegin=(event, selectedDate)=>{
         this.setState({
-            "date": selectedDate || this.state.date,
+            "beginDate": selectedDate || this.state.beginDate,
             "show": Platform.OS === 'ios'
         })
     }
-    createNote(){
-    	console.log(this.state);
-    	// title: "",
-     //        priority: "",
-     //        description: "",
-     //        category: "",
+    onChangeEnd=(event, selectedDate)=>{
+        this.setState({
+            "endDate": selectedDate || this.state.endDate,
+            "show": Platform.OS === 'ios'
+        })
+    }
+    async createNote(){
+    	var query = `INSERT INTO notes (uid, title, createTime, beginDate, endDate, priority, description, category) VALUES (?,?,?,?,?,?,?,?);`
+    	var params = [firebase.auth().currentUser.uid, this.state.title, Date.now(), new Date(this.state.beginDate).getTime(), new Date(this.state.endDate).getTime(), this.state.priority, this.state.description, this.state.tags.tagsArray.toString()]
+		db.transaction(tx=>{
+	    	tx.executeSql(query, params,(tx, result)=>{
+				this.setState({
+					title: "",
+		            priority: "",
+		            description: "",
+		            beginDate: new Date(Date.now()),
+		            tags: {
+		                tag: '',
+		                tagsArray: []
+		            }
+				})
+	    	}, (tx, err)=>{
+	    		console.warn(tx, err);
+	    	})
+		})
     }
     handlePress = (e) => {
     	console.log(e);
@@ -60,7 +81,6 @@ export default class Category extends React.Component {
         this.setState({ myText: 'You swiped right!' });
     }
     render() {
-
         const config = {
             velocityThreshold: 0.27,
             directionalOffsetThreshold: 80
@@ -92,31 +112,44 @@ export default class Category extends React.Component {
 					    		<DateTimePicker
 					    			style={{color: "#fff"}} 
 							        testID="dateTimePicker"
-							        value={this.state.date}
+							        value={this.state.beginDate}
 							        mode={'datetime'}
 							        is24Hour={true}
 							        display="default"
-							        onChange={this.onChange}
+							        onChange={this.onChangeBegin}
 						        />
 						    </View>
-							<View style={[styles.pickerChildren, styles.pickerChildrenSelect]}>
-								<RNPickerSelect
-									style={{...pickerSelectStyles}}
-									value={this.state.priority}
-									itemStyle={{color: "#fff"}}
-						            onValueChange={(value) => this.setState({"priority": value})}
-						            placeholder={{label: 'Select priority', value: null}}
-						            items={[
-						                { label: 'High', value: 'high' },
-						                { label: 'Medium', value: 'medium' },
-						                { label: 'Slow', value: 'slow' },
-						            ]}
+						    <Text style={styles.to}>to</Text>
+							<View style={[styles.pickerChildren]}>
+					    		<DateTimePicker
+					    			style={{color: "#fff"}} 
+							        testID="dateTimePicker"
+							        value={this.state.endDate}
+							        mode={'datetime'}
+							        is24Hour={true}
+							        display="default"
+							        onChange={this.onChangeEnd}
 						        />
 						    </View>
+					    </View>
+						<View style={[styles.input, styles.items]}>
+							<RNPickerSelect
+								style={{...pickerSelectStyles}}
+								value={this.state.priority}
+								itemStyle={{color: "#fff"}}
+					            onValueChange={(value) => this.setState({"priority": value})}
+					            placeholder={{label: 'Select priority', value: null}}
+					            items={[
+					                { label: 'High', value: 'high' },
+					                { label: 'Medium', value: 'medium' },
+					                { label: 'Slow', value: 'slow' },
+					            ]}
+					        />
 					    </View>
 						<View>
 						    <TextInput
 							    style={[styles.input, styles.items, styles.description]}
+						        onChangeText={(value) => this.setState({"description": value})}
 							    placeholder="Description"
 							    numberOfLines={5}
 							    multiline={true}
@@ -149,20 +182,31 @@ const styles = StyleSheet.create({
 	title:{
 		fontSize: 40,
 	},
+	to:{
+		position: "absolute",
+		top: 42,
+		left: 179,
+		color: '#fff',
+		zIndex: 999,
+	},
     container: {
         flex: 1,
         paddingTop: 22
     },
     pickerChildren: {
     	marginTop: 20,
-    	width: (Dimensions.get('window').width)/2+30,
+    	width: (Dimensions.get('window').width)/2,
     	height: 60,
-    	padding: 15,
+    	padding: 10,
     	paddingLeft: 2,
+    	paddingRight: 2,
     	color: "#fff",
+    	borderColor: "#717171",
+        borderRadius: 8,
     	backgroundColor: "#717171",
     },
     datePicker: {
+    	position : "relative",
     	flex: -1,
     	flexDirection: "row",
     	marginBottom: 0,
@@ -176,7 +220,7 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     select: {
-    	width: (Dimensions.get('window').width)/2-30,
+    	width: (Dimensions.get('window').width),
     	paddingTop: 30,
     	color: "#fff",
     },
@@ -184,7 +228,7 @@ const styles = StyleSheet.create({
     	paddingTop: 23,
     },
     input: {
-        padding: 20,
+        padding: 15,
         backgroundColor: "#fff",
         borderColor: "#222",
         borderRadius: 8
@@ -210,7 +254,7 @@ const styles = StyleSheet.create({
         color: "#fff"
     },
     btnSubmit: {
-        padding: 20,
+        padding: 15,
         borderColor: "#222",
         position: "relative",
         backgroundColor: "#007bff",
@@ -221,7 +265,7 @@ const styles = StyleSheet.create({
     },
     description: {
         width: Dimensions.get('window').width,
-        height: 100,
+        height: 80,
         paddingTop: 20,
         paddingBottom: 20,
     },
@@ -247,7 +291,6 @@ const styles = StyleSheet.create({
 })
 const pickerSelectStyles = StyleSheet.create({
 	inputIOS: {
-	    color: '#fff',
 	},
 
 });

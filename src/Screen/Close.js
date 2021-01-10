@@ -55,7 +55,7 @@ export default (props) =>{
 		        onPress={() => props.navigation.closeDrawer()}
 		      />
 		      <DrawerItem
-		      	style={{top: Dimensions.get('window').height-550}}
+		      	style={{top: Dimensions.get('window').height-600}}
 		        label="Logout"
 		        onPress={() => firebase.auth().signOut()}
 		      />

@@ -3,10 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SQLite from "expo-sqlite"
 
 import Loading from './src/Screen/Loading';
 import LoginScreen from "./src/Screen/Login"
 import Register from "./src/Screen/Register"
+const db = SQLite.openDatabase("db.db")
 
 import * as firebase from 'firebase'
 
@@ -33,6 +35,24 @@ const AuthStack = createStackNavigator();
 
 
 export default class App extends React.Component {
+  UNSAFE_componentWillMount(){
+    var createTable = `CREATE TABLE if not exists notes(
+                          uid         STRING  NOT NULL,
+                          title       STRING  NOT NULL PRIMARY KEY,
+                          createTime  INTEGER NOT NULL,
+                          description STRING,
+                          priority    STRING  NOT NULL,
+                          beginDate   INTEGER NOT NULL,
+                          endDate     INTEGER NOT NULL,
+                          category    STRING
+                      );`
+    var drop = `DROP TABLE notes`
+    db.transaction(tx=>{
+      tx.executeSql(createTable, (tx, result)=>{
+        console.log(tx, result);
+      })
+    })
+  }
   render(){
     return (
       <NavigationContainer>
